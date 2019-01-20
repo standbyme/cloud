@@ -1,14 +1,14 @@
 package standbyme.cloud.storage
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.Resource
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service
 
 import java.net.MalformedURLException
 import org.springframework.core.io.UrlResource
@@ -47,20 +47,18 @@ class FileSystemStorageService @Autowired constructor(properties: StoragePropert
     }
 
     override fun loadAsResource(filename: String): Resource {
-        try {
+        return try {
             val file = load(filename)
             val resource = UrlResource(file.toUri())
-            return if (resource.exists() || resource.isReadable) {
+            if (resource.exists() || resource.isReadable) {
                 resource
             } else {
                 throw StorageFileNotFoundException(
                         "Could not read file: $filename")
-
             }
         } catch (e: MalformedURLException) {
             throw StorageFileNotFoundException("Could not read file: $filename", e)
         }
-
     }
 
     override fun init() {
