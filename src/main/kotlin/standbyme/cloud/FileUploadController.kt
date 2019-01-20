@@ -21,7 +21,7 @@ class FileUploadController @Autowired constructor(private val storageService: St
                 "attachment; filename=\"" + file.filename + "\"").body<Resource>(file)
     }
 
-    @PostMapping("{filename:.+}")
+    @PutMapping("{filename:.+}")
     fun handleFileUpload(@RequestBody data: String, @PathVariable filename: String): ResponseEntity<*> {
 
         storageService.store(filename, data)

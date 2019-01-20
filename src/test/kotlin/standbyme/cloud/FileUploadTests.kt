@@ -10,11 +10,10 @@ import standbyme.cloud.storage.StorageService
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import standbyme.cloud.storage.StorageFileNotFoundException
 import org.mockito.BDDMockito.given
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 
 
 @RunWith(SpringRunner::class)
@@ -30,7 +29,7 @@ class FileUploadTests {
     @Test
     @Throws(Exception::class)
     fun shouldSaveUploadedFile() {
-        this.mvc!!.perform(post("/objects/filename").content("Successful content"))
+        this.mvc!!.perform(put("/objects/filename").content("Successful content"))
                 .andExpect(status().is2xxSuccessful)
 
         then(this.storageService).should()!!.store("filename","Successful content")
