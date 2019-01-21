@@ -14,7 +14,7 @@ import standbyme.cloud.storage.StorageFileNotFoundException
 class FileUploadController @Autowired constructor(private val storageService: StorageService) {
 
     @GetMapping("{filename:.+}")
-    fun serveFile(@PathVariable filename: String): ResponseEntity<Resource> {
+    fun get(@PathVariable filename: String): ResponseEntity<Resource> {
 
         val file = storageService.loadAsResource(filename)
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
@@ -22,7 +22,7 @@ class FileUploadController @Autowired constructor(private val storageService: St
     }
 
     @PutMapping("{filename:.+}")
-    fun handleFileUpload(@RequestBody data: String, @PathVariable filename: String): ResponseEntity<*> {
+    fun put(@RequestBody data: String, @PathVariable filename: String): ResponseEntity<*> {
 
         storageService.store(filename, data)
         return ResponseEntity.ok().build<Any>()
