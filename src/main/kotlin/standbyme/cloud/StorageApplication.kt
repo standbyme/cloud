@@ -6,11 +6,13 @@ import org.springframework.boot.runApplication
 import standbyme.cloud.storage.StorageProperties
 import standbyme.cloud.storage.StorageService
 import org.springframework.boot.CommandLineRunner
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.context.annotation.Bean
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties::class)
+@EnableDiscoveryClient
 class StorageApplication {
     @Bean
     fun init(storageService: StorageService) = CommandLineRunner { args ->
