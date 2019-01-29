@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpHeaders
 import standbyme.cloud.storage.StorageService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.Resource
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import standbyme.cloud.storage.StorageFileNotFoundException
@@ -14,11 +13,11 @@ import standbyme.cloud.storage.StorageFileNotFoundException
 class FileUploadController @Autowired constructor(private val storageService: StorageService) {
 
     @GetMapping("{filename:.+}")
-    fun get(@PathVariable filename: String): ResponseEntity<Resource> {
+    fun get(@PathVariable filename: String): ResponseEntity<ByteArray> {
 
-        val file = storageService.loadAsResource(filename)
+        val file = storageService.load(filename)
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.filename + "\"").body<Resource>(file)
+                "attachment; filename=\"" + filename + "\"").body<ByteArray>(file)
     }
 
     @PutMapping("{filename:.+}")

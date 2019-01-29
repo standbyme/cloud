@@ -7,12 +7,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
-
-import java.net.MalformedURLException
-import org.springframework.core.io.UrlResource
-
 
 @Service
 class FileSystemStorageService @Autowired constructor(properties: StorageProperties) : StorageService {
@@ -42,22 +37,14 @@ class FileSystemStorageService @Autowired constructor(properties: StoragePropert
         }
     }
 
-    override fun load(filename: String): Path {
-        return rootLocation.resolve(filename)
-    }
+    override fun load(filename: String): ByteArray {
+        val byteArray = Files.newDirectoryStream(rootLocation, """$filename.*""").flatMap { Files.readAllBytes(it).toList() }.toByteArray()
 
-    override fun loadAsResource(filename: String): Resource {
-        return try {
-            val file = load(filename)
-            val resource = UrlResource(file.toUri())
-            if (resource.exists() || resource.isReadable) {
-                resource
-            } else {
-                throw StorageFileNotFoundException(
-                        "Could not read file: $filename")
-            }
-        } catch (e: MalformedURLException) {
-            throw StorageFileNotFoundException("Could not read file: $filename", e)
+        return if (byteArray.isEmpty()) {
+            throw StorageFileNotFoundException(
+                    "Could not read file: $filename")
+        } else {
+            byteArray
         }
     }
 
