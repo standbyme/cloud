@@ -18,7 +18,7 @@ class FileSystemStorageService @Autowired constructor(properties: StoragePropert
         this.rootLocation = Paths.get(properties.location)
     }
 
-    override fun store(filename: String, file: String) {
+    override fun store(filename: String, file: ByteArray) {
         try {
             if (file.isEmpty()) {
                 throw StorageException("Failed to store empty file $filename")
@@ -29,7 +29,7 @@ class FileSystemStorageService @Autowired constructor(properties: StoragePropert
                         "Cannot store file with relative path outside current directory $filename")
             }
 
-            Files.copy(file.byteInputStream(), this.rootLocation.resolve(filename),
+            Files.copy(file.inputStream(), this.rootLocation.resolve(filename),
                     StandardCopyOption.REPLACE_EXISTING)
 
         } catch (e: IOException) {

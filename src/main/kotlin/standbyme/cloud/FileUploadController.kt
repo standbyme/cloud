@@ -21,7 +21,7 @@ class FileUploadController @Autowired constructor(private val storageService: St
     }
 
     @PutMapping("{filename:.+}")
-    fun put(@RequestBody data: String, @PathVariable filename: String): ResponseEntity<*> {
+    fun put(@RequestBody data: ByteArray, @PathVariable filename: String): ResponseEntity<*> {
 
         storageService.store(filename, data)
         return ResponseEntity.ok().build<Any>()

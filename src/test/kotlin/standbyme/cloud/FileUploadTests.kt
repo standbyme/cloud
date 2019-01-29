@@ -34,7 +34,7 @@ class FileUploadTests {
         this.mvc!!.perform(put("/objects/filename").content("Successful content"))
                 .andExpect(status().is2xxSuccessful)
 
-        then(this.storageService).should()!!.store("filename", "Successful content")
+        then(this.storageService).should()!!.store("filename", "Successful content".toByteArray())
     }
 
     @Test
